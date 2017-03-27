@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 
 from numpy import pi, sqrt, arccos, exp
+from tqdm import tqdm
 import scipy.integrate as integrate
-import numpy as np
+import numpy as np; np.seterr(invalid='ignore')
 import plawt
 
 # Scaling
@@ -16,16 +17,16 @@ def r(z,y):
 	return 2 * H * arccos(arg)
 
 z = np.arange(-2, 10, 0.00001)
-y = [0.5, 1, 1.4, 1.7, 1.9, 1.98, 2.0]
+y = [0.1, 0.5, 1, 1.4, 1.7, 1.9, 1.98, 2.0]
 figure1 = {
 	'ylabel': 'z/H', 'xlabel': 'r/H',
 	'filename': 'shockfront.png',
 	'ylim': (-2, 10), 'xlim': (-6, 6),
-	'figsize': (6/1.3, 6.5/1.3)
-	# 'show': True
+	'figsize': (6/1.3, 6.5/1.3),
+	'show': False
 }
 
-for i, yi in enumerate(y):
+for i, yi in enumerate(tqdm(y)):
 	figure1[i] = {'x': np.concatenate((r(z, y[i]), -r(z, y[i]))), 'y': np.concatenate((z,z))}
 plawt.plot(figure1)
 
