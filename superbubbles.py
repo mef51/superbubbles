@@ -6,13 +6,6 @@ import scipy.integrate as integrate
 import numpy as np; np.seterr(invalid='ignore')
 import plawt
 
-# Scaling
-H = 1 # [L] = H
-gamma = 5/3
-L_not = 1
-P = 1
-
-
 def r(z,y):
 	""" Get the shape of the shockfront """
 	arg = 1 - y**2/(4*H**2) + exp(-z/H)
@@ -46,17 +39,36 @@ def shockfronts():
 		figure1[i] = {'x': np.concatenate((r(z, y[i]), -r(z, y[i]))), 'y': np.concatenate((z,z))}
 	plawt.plot(figure1)
 
-def integrate():
-	# initial conditions
-	yi = 0.01 #(goes up to 1.98?)
-	Omegai = (4*pi/3)*rmax(yi)**3
-	Ethi = P/(gamma-1)*Omegai
+# Scaling
+H = 1 # [L] = H
+gamma = 5/3
+L_not = 1
+rho_not = 1
+P = 1
 
+# initial conditions
+yi = 0.01 #(goes up to 1.98?)
+Omegai = (4*pi/3)*rmax(yi)**3
+Ethi = P/(gamma-1)*Omegai
 
+# use quad to find dOmega, but use odeint to solve the entire system
 
-integrate()
-# Omega = pi * scipy.integrate(r(z, t)**2, z, z2, z1) # (A3)
-# P = (gamma - 1) * thermalE / Omega # (A2)
+dy = lambda Eth, Omega: sqrt((gamma**2 - 1)*Eth / 2  / (rho_not * Omega))
+dr = lambda z, y: y / ( 2*sqrt(1 - 1/4*exp(z/H)*(1-y**2/(4*H**2)+exp(-z/H))**2) )
+dOmega = lambda y: 2 * pi * integrate.quad(lambda z: r(z, y) * dr(z, y), z12(y)[1], z12(y)[0])[0]
+dEth = lambda y: L_not - P * dOmega(y)
 
-# dthermalEdt = L_not - P*dOmegadt
-# dydt = sqrt(((gamma**2 - 1) * thermalE)/(2*(rho_not * Omega))) # (A6)
+def bubblesystem(state, t):
+	y, Omega, Eth = state
+
+	# need dydt, drdt, dOmegadt, dEthdt
+	dydt = dy(Eth, Omega)
+	dOmegadt = dOmega(y)
+	dEthdt = L_not - P * dOmegadt
+
+	return [dydt, dOmegadt, dEthdt]
+
+initialstate = [yi, Omegai, Ethi]
+time = np.arange(0.2, 1, 0.001)
+results = integrate.odeint(bubblesystem, initialstate, time)
+print(len(results))
