@@ -3,7 +3,7 @@
 from numpy import pi, sqrt, arccos, arcsin, exp, log
 from tqdm import tqdm
 import scipy.integrate as integrate
-import numpy as np; np.seterr(invalid='ignore')
+import numpy as np
 import plawt
 
 def r(z,y):
@@ -54,11 +54,6 @@ dr = lambda z, y: y / ( 2*sqrt(1 - 1/4*exp(z/H)*(1-y**2/(4*H**2)+exp(-z/H))**2) 
 dOmega = lambda y: 2 * pi * integrate.quad(lambda z: r(z, y) * dr(z, y), z12(y)[1], z12(y)[0])[0]
 dEth = lambda y: L_not - P * dOmega(y)
 
-# initial conditions
-yi = 0.1 #(goes up to 1.98?)
-Omegai = 2*dOmega(yi)
-Ethi = 1#P/(gamma-1)*Omegai
-
 def bubblesystem(state, t):
 	y, Omega, Eth = state
 
@@ -69,11 +64,45 @@ def bubblesystem(state, t):
 
 	return [dydt, dOmegadt, dEthdt]
 
+
+dt = 0.0001
+time = np.arange(0.005, 10, dt)
+
+OmegaFunc = lambda y: pi * integrate.quad(lambda z: r(z, y)**2, z12(y)[1], z12(y)[0])[0]
+EnergyFunc = lambda oprev, onext, e: oprev**(gamma-1)*(e+dt)/(onext**(gamma-1))
+
+# initial conditions
+yi = 0.01 #(goes up to 1.98?)
+Omegai = OmegaFunc(yi)
+Ethi = P/(gamma-1)*Omegai
 initialstate = [yi, Omegai, Ethi]
-time = np.arange(0.2, 10, 0.001)
-results = integrate.odeint(bubblesystem, initialstate, time)
-print(time[-1])
-plawt.plot({0:{'x':time, 'y':results[:, 0]}, 'show':False, 'filename': 'yplot.png', 'title': 'y'})
-plawt.plot({0:{'x':time, 'y':results[:, 1]}, 'show':False, 'filename': 'Omegaplot.png', 'title': 'Omega'})
-plawt.plot({0:{'x':time, 'y':results[:, 2]}, 'show':False, 'filename': 'Energyplot.png', 'title': 'Energy'})
+
+ys = [yi]
+Omegas = [Omegai]
+Es = [Ethi]
+
+for t in tqdm(time):
+	ynext = ys[-1] + dy(Es[-1], Omegas[-1])*dt
+	omeganext = OmegaFunc(ynext)
+	energynext = EnergyFunc(Omegas[-1], omeganext, Es[-1])
+
+	ys.append(ynext)
+	Omegas.append(omeganext)
+	Es.append(energynext)
+	if ynext > 1.99999:
+		break
+
+plawt.plot({0: {'x': time[:len(ys)-1], 'y': ys[:-1]},     'show':False, 'filename': 'yplot.png',     'title': "Y", 'xlabel': 'time',
+	'set_yscale': 'log', 'set_xscale': 'log', 'xlim': (0.01, 10), 'ylim': (0.1, 10.0)})
+plawt.plot({0: {'x': time[:len(ys)-1], 'y': Omegas[:-1]}, 'show':False, 'filename': 'Omegaplot.png', 'title': "Omega", 'xlabel': 'time',
+	'set_yscale': 'log', 'set_xscale': 'log', 'xlim': (0.01, 10), 'ylim': (0.1, 10.0)})
+plawt.plot({0: {'x': time[:len(ys)-1], 'y': Es[:-1]},     'show':False, 'filename': 'Energyplot.png','title': "Energy", 'xlabel': 'time',
+	'set_yscale': 'log', 'set_xscale': 'log', 'xlim': (0.01, 10), 'ylim': (0.01, 10.0)})
+
+
+# results = integrate.odeint(bubblesystem, initialstate, time)
+# print(time[-1])
+# plawt.plot({0:{'x':time, 'y':results[:, 0]}, 'show':False, 'filename': 'yplot2.png',     'title': 'y'})
+# plawt.plot({0:{'x':time, 'y':results[:, 1]}, 'show':False, 'filename': 'Omegaplot2.png', 'title': 'Omega'})
+# plawt.plot({0:{'x':time, 'y':results[:, 2]}, 'show':False, 'filename': 'Energyplot2.png', 'title': 'Energy'})
 
