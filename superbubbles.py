@@ -39,48 +39,35 @@ def shockfronts():
 		figure1[i] = {'x': np.concatenate((r(z, y[i]), -r(z, y[i]))), 'y': np.concatenate((z,z))}
 	plawt.plot(figure1)
 
-# Scaling
+# Dimensionless Scaling
 H = 1 # [L] = H
 gamma = 5/3
 L_not = 1
 rho_not = 1
 P = 1
 
-
-# use quad to find dOmega, but use odeint to solve the entire system
-
+# Math Helpers
 dy = lambda Eth, Omega: sqrt((gamma**2 - 1)*Eth / 2  / (rho_not * Omega))
 dr = lambda z, y: y / ( 2*sqrt(1 - 1/4*exp(z/H)*(1-y**2/(4*H**2)+exp(-z/H))**2) )
 dOmega = lambda y: 2 * pi * integrate.quad(lambda z: r(z, y) * dr(z, y), z12(y)[1], z12(y)[0])[0]
 dEth = lambda y: L_not - P * dOmega(y)
 
-def bubblesystem(state, t):
-	y, Omega, Eth = state
-
-	# need dydt, drdt, dOmegadt, dEthdt
-	dydt = dy(Eth, Omega)
-	dOmegadt = dOmega(y)
-	dEthdt = L_not - P * dOmegadt
-
-	return [dydt, dOmegadt, dEthdt]
-
-
-dt = 0.0001
-time = np.arange(0.005, 10, dt)
-
 OmegaFunc = lambda y: pi * integrate.quad(lambda z: r(z, y)**2, z12(y)[1], z12(y)[0])[0]
 EnergyFunc = lambda oprev, onext, e: oprev**(gamma-1)*(e+dt)/(onext**(gamma-1))
 
 # initial conditions
-yi = 0.01 #(goes up to 1.98?)
+dt = 0.0001
+time = np.arange(0.005, 10, dt)
+yi = 0.01
 Omegai = OmegaFunc(yi)
 Ethi = P/(gamma-1)*Omegai
-initialstate = [yi, Omegai, Ethi]
 
+initialstate = [yi, Omegai, Ethi]
 ys = [yi]
 Omegas = [Omegai]
 Es = [Ethi]
 
+# Integrate
 for t in tqdm(time):
 	ynext = ys[-1] + dy(Es[-1], Omegas[-1])*dt
 	omeganext = OmegaFunc(ynext)
@@ -92,13 +79,45 @@ for t in tqdm(time):
 	if ynext > 1.99999:
 		break
 
-plawt.plot({0: {'x': time[:len(ys)-1], 'y': ys[:-1]},     'show':False, 'filename': 'yplot.png',     'title': "Y", 'xlabel': 'time',
-	'set_yscale': 'log', 'set_xscale': 'log', 'xlim': (0.01, 10), 'ylim': (0.1, 10.0)})
-plawt.plot({0: {'x': time[:len(ys)-1], 'y': Omegas[:-1]}, 'show':False, 'filename': 'Omegaplot.png', 'title': "Omega", 'xlabel': 'time',
-	'set_yscale': 'log', 'set_xscale': 'log', 'xlim': (0.01, 10), 'ylim': (0.1, 10.0)})
-plawt.plot({0: {'x': time[:len(ys)-1], 'y': Es[:-1]},     'show':False, 'filename': 'Energyplot.png','title': "Energy", 'xlabel': 'time',
-	'set_yscale': 'log', 'set_xscale': 'log', 'xlim': (0.01, 10), 'ylim': (0.01, 10.0)})
+plawt.plot({
+	0: {'x': time[:len(ys)-1], 'y': ys[:-1]},
+    'show':False,
+    'filename': 'yplot.png',
+    'title': "Y",
+    'xlabel': 'time',
+	'set_yscale': 'log', 'set_xscale': 'log',
+	'xlim': (0.01, 10), 'ylim': (0.1, 10.0)
+})
+plawt.plot({
+	0: {'x': time[:len(ys)-1], 'y': Omegas[:-1]},
+    'show':False,
+    'filename': 'Omegaplot.png',
+    'title': "Omega",
+    'xlabel': 'time',
+	'set_yscale': 'log', 'set_xscale': 'log',
+	'xlim': (0.01, 10), 'ylim': (0.1, 10.0)
+})
+plawt.plot({
+	0: {'x': time[:len(ys)-1], 'y': Es[:-1]},
+    'show':False,
+    'filename': 'Energyplot.png',
+    'title': "Energy",
+    'xlabel': 'time',
+	'set_yscale': 'log', 'set_xscale': 'log',
+	'xlim': (0.01, 10), 'ylim': (0.01, 10.0)
+})
 
+
+# alternative: use odeint to solve the entire system. doesn't work
+def bubblesystem(state, t):
+	y, Omega, Eth = state
+
+	# need dydt, drdt, dOmegadt, dEthdt
+	dydt = dy(Eth, Omega)
+	dOmegadt = dOmega(y)
+	dEthdt = L_not - P * dOmegadt
+
+	return [dydt, dOmegadt, dEthdt]
 
 # results = integrate.odeint(bubblesystem, initialstate, time)
 # print(time[-1])
