@@ -46,10 +46,6 @@ L_not = 1
 rho_not = 1
 P = 1
 
-# initial conditions
-yi = 0.01 #(goes up to 1.98?)
-Omegai = (4*pi/3)*rmax(yi)**3
-Ethi = P/(gamma-1)*Omegai
 
 # use quad to find dOmega, but use odeint to solve the entire system
 
@@ -57,6 +53,11 @@ dy = lambda Eth, Omega: sqrt((gamma**2 - 1)*Eth / 2  / (rho_not * Omega))
 dr = lambda z, y: y / ( 2*sqrt(1 - 1/4*exp(z/H)*(1-y**2/(4*H**2)+exp(-z/H))**2) )
 dOmega = lambda y: 2 * pi * integrate.quad(lambda z: r(z, y) * dr(z, y), z12(y)[1], z12(y)[0])[0]
 dEth = lambda y: L_not - P * dOmega(y)
+
+# initial conditions
+yi = 0.1 #(goes up to 1.98?)
+Omegai = 2*dOmega(yi)
+Ethi = 1#P/(gamma-1)*Omegai
 
 def bubblesystem(state, t):
 	y, Omega, Eth = state
@@ -69,6 +70,10 @@ def bubblesystem(state, t):
 	return [dydt, dOmegadt, dEthdt]
 
 initialstate = [yi, Omegai, Ethi]
-time = np.arange(0.2, 1, 0.001)
+time = np.arange(0.2, 10, 0.001)
 results = integrate.odeint(bubblesystem, initialstate, time)
-print(len(results))
+print(time[-1])
+plawt.plot({0:{'x':time, 'y':results[:, 0]}, 'show':False, 'filename': 'yplot.png', 'title': 'y'})
+plawt.plot({0:{'x':time, 'y':results[:, 1]}, 'show':False, 'filename': 'Omegaplot.png', 'title': 'Omega'})
+plawt.plot({0:{'x':time, 'y':results[:, 2]}, 'show':False, 'filename': 'Energyplot.png', 'title': 'Energy'})
+
