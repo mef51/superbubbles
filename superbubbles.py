@@ -53,7 +53,8 @@ dOmega = lambda y: 2 * pi * integrate.quad(lambda z: r(z, y) * dr(z, y), z12(y)[
 dEth = lambda y: L_not - P * dOmega(y)
 
 OmegaFunc = lambda y: pi * integrate.quad(lambda z: r(z, y)**2, z12(y)[1], z12(y)[0])[0]
-EnergyFunc = lambda oprev, onext, e: oprev**(gamma-1)*(e+dt)/(onext**(gamma-1))
+# EnergyFunc = lambda oprev, onext, E: oprev**(gamma-1)*(E+dt)/(onext**(gamma-1)) # Taran's integrating factor way
+EnergyFunc = lambda oprev, onext, E: L_not*dt - (gamma-1)*E*(onext-oprev)/oprev+E
 
 # initial conditions
 dt = 0.0001
