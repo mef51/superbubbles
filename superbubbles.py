@@ -6,6 +6,13 @@ import scipy.integrate as integrate
 import numpy as np
 import plawt
 
+# Dimensionless Scaling
+H = 1 # [L] = H
+gamma = 5/3
+L_not = 1
+rho_not = 1
+P = 1
+
 def r(z,y):
 	""" Get the shape of the shockfront """
 	arg = 1 - y**2/(4*H**2) + exp(-z/H)
@@ -18,6 +25,7 @@ def z12(y):
 	returns tuple (z1, z2)
 	"""
 	return (-2*H*log(1 - y/(2*H)), -2*H*log(1 + y/(2*H)))
+z12 = np.vectorize(z12)
 
 def rmax(y):
 	""" Get max radius of the bubble """
@@ -38,12 +46,6 @@ def shockfronts():
 	for i, yi in enumerate(tqdm(y)):
 		figure1[i] = {'x': np.concatenate((r(z, y[i]), -r(z, y[i]))), 'y': np.concatenate((z,z))}
 	plawt.plot(figure1)
-# Dimensionless Scaling
-H = 1 # [L] = H
-gamma = 5/3
-L_not = 1
-rho_not = 1
-P = 1
 
 ### Math Helpers ###
 
@@ -55,13 +57,17 @@ dEth = lambda y, dy, P: L_not - P * dOmega(y, dy)
 
 # Equations from paper
 PFunc = lambda E, O: (gamma - 1)*E/O
+PFunc = np.vectorize(PFunc)
 OmegaFunc = lambda y: pi * integrate.quad(lambda z: r(z, y)**2, z12(y)[1], z12(y)[0])[0]
 EnergyFunc = lambda oprev, onext, E: L_not*dt - (gamma-1)*E*(onext-oprev)/oprev+E
+
+dzsdt = lambda y, E, O: ( dy(E, O)/(1-y/(2*H)), -dy(E, O)/(1+y/(2*H)) )
+dzsdt = np.vectorize(dzsdt)
 
 ###
 
 # initial conditions
-dt = 0.0001
+dt = 0.0001 # only seems to work with this dt
 time = np.arange(0.005, 10, dt)
 yi = 0.01
 Omegai = OmegaFunc(yi)
@@ -84,34 +90,71 @@ for t in tqdm(time):
 	if ynext > 1.99999:
 		break
 
+# Calculate extras
+z12s = z12(ys)
+r = np.vectorize(r) # vectorize after we're done integrating because it makes it really slow otherwise
+Ps = PFunc(Es, Omegas)
+dz1sdt = dzsdt(ys, Es, Omegas)[0]
+
+# Plot
 plawt.plot({
-	0: {'x': time[:len(ys)-1], 'y': ys[:-1]},
-    'show':False,
-    'filename': 'yplot.png',
-    'title': "Y",
-    'xlabel': 'time',
+	0: {'x': time[:len(ys)], 'y': ys},
+	'show':False,
+	'filename': 'y.png',
+	'title': "Y",
+	'xlabel': 'time',
 	'set_yscale': 'log', 'set_xscale': 'log',
 	'xlim': (0.01, 10), 'ylim': (0.1, 10.0)
 })
 plawt.plot({
-	0: {'x': time[:len(ys)-1], 'y': Omegas[:-1]},
-    'show':False,
-    'filename': 'Omegaplot.png',
-    'title': "Omega",
-    'xlabel': 'time',
-	'set_yscale': 'log', 'set_xscale': 'log',
-	'xlim': (0.01, 10), 'ylim': (0.1, 10.0)
-})
-plawt.plot({
-	0: {'x': time[:len(ys)-1], 'y': Es[:-1]},
-    'show':False,
-    'filename': 'Energyplot.png',
-    'title': "Energy",
-    'xlabel': 'time',
+	0: {'x': time[:len(ys)], 'y': Es},
+	'show':False,
+	'filename': 'energy.png',
+	'title': "Energy",
+	'xlabel': 'time',
 	'set_yscale': 'log', 'set_xscale': 'log',
 	'xlim': (0.01, 10), 'ylim': (0.01, 10.0)
 })
-
+plawt.plot({
+	0: {'x': time[:len(ys)], 'y': z12s[0], 'label': 'z1'},
+	1: {'x': time[:len(ys)], 'y': -z12s[1], 'label': 'z2'},
+	2: {'x': time[:len(ys)], 'y': r(0, ys), 'label': '$r(z=0,y)$', 'line': 'k--'},
+	'filename': 'blastedges.png',
+	'title': 'Blast Edges',
+	'xlabel': 'time',
+	'legend': {'loc': 4},
+	'set_yscale': 'log', 'set_xscale': 'log',
+	'xlim': (0.01, 10), 'ylim': (0.1, 10.0)
+})
+plawt.plot({
+	0: {'x': time[:len(ys)], 'y': Ps},
+	'show':False,
+	'filename': 'pressure.png',
+	'title': "Pressure",
+	'xlabel': 'time',
+	'set_yscale': 'log', 'set_xscale': 'log',
+	'xlim': (0.01, 10), 'ylim': (0.01, 10.0)
+})
+plawt.plot({
+	0: {'x': time[:len(ys)], 'y': dz1sdt},
+	'show':False,
+	'filename': 'blastedgespeed.png',
+	'title': "Blast Edge Speed",
+	'xlabel': 'time',
+	'ylabel': '$dz_1/dt$',
+	'set_yscale': 'log', 'set_xscale': 'log',
+	'xlim': (0.01, 10), 'ylim': (0.01, 10.0)
+})
+plawt.plot({
+	0: {'x': z12s[0], 'y': dz1sdt},
+	'show':False,
+	'filename': 'blastedgeSpeedvsPos.png',
+	'title': "Blast Edge Speed vs. Position",
+	'xlabel': '$z_1$',
+	'ylabel': '$dz_1/dt$',
+	'set_yscale': 'log', 'set_xscale': 'log',
+	'xlim': (0.1, 10), 'ylim': (0.1, 10.0)
+})
 
 # alternative: use odeint to solve the entire system. works
 def alternateIntegration():
