@@ -1,0 +1,349 @@
+#LyX 2.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 508
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass revtex4
+\begin_preamble
+\usepackage{graphicx}
+\usepackage{pdflscape}
+\usepackage[cm]{fullpage}
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "ae" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize 10
+\spacing single
+\use_hyperref false
+\papersize letterpaper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\topmargin 12.7cm
+\bottommargin 2.54cm
+\secnumdepth 4
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+ASTRONOMY 9602
+\begin_inset Newline newline
+\end_inset
+
+COMPUTER PROJECT #2
+\end_layout
+
+\begin_layout Author
+Mohammed Chamma 
+\begin_inset Newline newline
+\end_inset
+
+250887035
+\begin_inset Newline newline
+\end_inset
+
+April 6th 2017
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset line
+LatexCommand rule
+offset "0.5ex"
+width "100col%"
+height "1pt"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+\paragraph_spacing other 0
+\noindent
+\align center
+
+\size largest
+Shockfronts
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement h
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+
+\emph on
+\begin_inset Graphics
+	filename figures/figure8.png
+	lyxscale 80
+	width 80text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Figure 8 motion, default initial conditions.
+ Large circles denote the starting position.
+ Stars denote the final position of the object.
+ Small dots are spaced at equal time intervals (roughly every 20 points)
+ and give information on the speed of the object.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+\paragraph_spacing other 0
+\noindent
+\align center
+
+\size largest
+Integrating
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+
+\emph on
+\begin_inset Graphics
+	filename figures/chaos.png
+	lyxscale 75
+	height 33theight%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+
+\emph on
+\begin_inset Graphics
+	filename figures/chaos2.png
+	lyxscale 75
+	height 33theight%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/chaos3.png
+	lyxscale 75
+	height 33theight%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Chaos"
+
+\end_inset
+
+Chaos
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+
+\emph on
+\begin_inset Graphics
+	filename figures/chaos4.png
+	lyxscale 75
+	width 45page%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/chaos5.png
+	lyxscale 75
+	width 45page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Chaos2"
+
+\end_inset
+
+Chaos
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section*
+\paragraph_spacing other 0
+\noindent
+\align center
+
+\size largest
+Code
+\end_layout
+
+\begin_layout Standard
+All code is available at 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/mef51/superbubbles"
+
+\end_inset
+
+ .
+ 
+\end_layout
+
+\begin_layout Standard
+I used Python.
+ I wrote a parser in a file called 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+parsenbody.py
+\end_layout
+
+\end_inset
+
+ which reads the data in output file into some python objects.
+ The second file 
+\begin_inset ERT
+status open
+
+\begin_layout Plain Layout
+
+nbodyplots.py
+\end_layout
+
+\end_inset
+
+ then uses that data to make all the plots in one go.
+ Copies of both are attached at the end.
+\end_layout
+
+\end_body
+\end_document

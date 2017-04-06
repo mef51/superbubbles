@@ -4,7 +4,11 @@ from numpy import pi, sqrt, arccos, arcsin, exp, log
 from tqdm import tqdm
 import scipy.integrate as integrate
 import numpy as np
-import plawt
+import os, plawt
+
+figdir = 'figures'
+if not os.path.exists(figdir):
+	os.mkdir(figdir)
 
 # Dimensionless Scaling
 H = 1 # [L] = H
