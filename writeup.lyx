@@ -193,7 +193,7 @@ status open
 \begin_inset Graphics
 	filename figures/y.png
 	lyxscale 75
-	height 33theight%
+	width 45page%
 
 \end_inset
 
@@ -201,7 +201,7 @@ status open
 \begin_inset Graphics
 	filename figures/blastedges.png
 	lyxscale 75
-	height 33theight%
+	width 45page%
 
 \end_inset
 
@@ -213,7 +213,7 @@ status open
 \begin_inset Graphics
 	filename figures/energy.png
 	lyxscale 75
-	height 33theight%
+	width 45page%
 
 \end_inset
 
@@ -221,7 +221,7 @@ status open
 \begin_inset Graphics
 	filename figures/pressure.png
 	lyxscale 75
-	height 33theight%
+	width 45page%
 
 \end_inset
 
@@ -233,7 +233,7 @@ status open
 \begin_inset Graphics
 	filename figures/blastedgespeed.png
 	lyxscale 75
-	height 33theight%
+	width 45page%
 
 \end_inset
 
@@ -241,7 +241,7 @@ status open
 \begin_inset Graphics
 	filename figures/blastedgeSpeedvsPos.png
 	lyxscale 75
-	height 33theight%
+	width 45page%
 
 \end_inset
 
