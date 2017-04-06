@@ -1,2 +1,3 @@
-![plot](shockfront.png)
 ![image](bubblefig.png)
+![plot](shockfront.png)
+
