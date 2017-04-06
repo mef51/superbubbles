@@ -104,7 +104,7 @@ dz1sdt = dzsdt(ys, Es, Omegas)[0]
 plawt.plot({
 	0: {'x': time[:len(ys)], 'y': ys},
 	'show':False,
-	'filename': 'y.png',
+	'filename': os.path.join(figdir,'y.png'),
 	'title': "Y",
 	'xlabel': 'time',
 	'set_yscale': 'log', 'set_xscale': 'log',
@@ -113,7 +113,7 @@ plawt.plot({
 plawt.plot({
 	0: {'x': time[:len(ys)], 'y': Es},
 	'show':False,
-	'filename': 'energy.png',
+	'filename': os.path.join(figdir,'energy.png'),
 	'title': "Energy",
 	'xlabel': 'time',
 	'set_yscale': 'log', 'set_xscale': 'log',
@@ -123,7 +123,7 @@ plawt.plot({
 	0: {'x': time[:len(ys)], 'y': z12s[0], 'label': 'z1'},
 	1: {'x': time[:len(ys)], 'y': -z12s[1], 'label': 'z2'},
 	2: {'x': time[:len(ys)], 'y': r(0, ys), 'label': '$r(z=0,y)$', 'line': 'k--'},
-	'filename': 'blastedges.png',
+	'filename': os.path.join(figdir,'blastedges.png'),
 	'title': 'Blast Edges',
 	'xlabel': 'time',
 	'legend': {'loc': 4},
@@ -133,7 +133,7 @@ plawt.plot({
 plawt.plot({
 	0: {'x': time[:len(ys)], 'y': Ps},
 	'show':False,
-	'filename': 'pressure.png',
+	'filename': os.path.join(figdir,'pressure.png'),
 	'title': "Pressure",
 	'xlabel': 'time',
 	'set_yscale': 'log', 'set_xscale': 'log',
@@ -142,7 +142,7 @@ plawt.plot({
 plawt.plot({
 	0: {'x': time[:len(ys)], 'y': dz1sdt},
 	'show':False,
-	'filename': 'blastedgespeed.png',
+	'filename': os.path.join(figdir,'blastedgespeed.png'),
 	'title': "Blast Edge Speed",
 	'xlabel': 'time',
 	'ylabel': '$dz_1/dt$',
@@ -152,7 +152,7 @@ plawt.plot({
 plawt.plot({
 	0: {'x': z12s[0], 'y': dz1sdt},
 	'show':False,
-	'filename': 'blastedgeSpeedvsPos.png',
+	'filename': os.path.join(figdir,'blastedgeSpeedvsPos.png'),
 	'title': "Blast Edge Speed vs. Position",
 	'xlabel': '$z_1$',
 	'ylabel': '$dz_1/dt$',
@@ -175,7 +175,7 @@ def alternateIntegration():
 	results = integrate.odeint(bubblesystem, initialstate, time)
 	plawt.plot({0:{'x':time, 'y':results[:, 0]},
 		'show':False,
-		'filename': 'yplot.png',
+		'filename': os.path.join(figdir,'yplot.png'),
 		'title': 'y',
 		'xlabel': 'time',
 		'set_yscale': 'log', 'set_xscale': 'log',
@@ -183,7 +183,7 @@ def alternateIntegration():
 	})
 	plawt.plot({0:{'x':time, 'y':results[:, 1]},
 		'show':False,
-		'filename': 'Omegaplot.png',
+		'filename': os.path.join(figdir,'Omegaplot.png'),
 		'title': 'Omega',
 		'xlabel': 'time',
 		'set_yscale': 'log', 'set_xscale': 'log',
@@ -191,7 +191,7 @@ def alternateIntegration():
 	})
 	plawt.plot({0:{'x':time, 'y':results[:, 2]},
 		'show':False,
-		'filename': 'Energyplot.png',
+		'filename': os.path.join(figdir,'Energyplot.png'),
 		'title': 'Energy',
 		'xlabel': 'time',
 		'set_yscale': 'log', 'set_xscale': 'log',
