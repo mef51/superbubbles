@@ -131,7 +131,7 @@ status open
 
 \emph on
 \begin_inset Graphics
-	filename figures/figure8.png
+	filename shockfront.png
 	lyxscale 80
 	width 80text%
 
@@ -172,6 +172,13 @@ Integrating
 \end_layout
 
 \begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement H
 wide false
@@ -184,21 +191,15 @@ status open
 
 \emph on
 \begin_inset Graphics
-	filename figures/chaos.png
+	filename figures/y.png
 	lyxscale 75
 	height 33theight%
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Plain Layout
-\align center
-
-\emph on
 \begin_inset Graphics
-	filename figures/chaos2.png
+	filename figures/blastedges.png
 	lyxscale 75
 	height 33theight%
 
@@ -210,7 +211,35 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename figures/chaos3.png
+	filename figures/energy.png
+	lyxscale 75
+	height 33theight%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/pressure.png
+	lyxscale 75
+	height 33theight%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename figures/blastedgespeed.png
+	lyxscale 75
+	height 33theight%
+
+\end_inset
+
+
+\begin_inset Graphics
+	filename figures/blastedgeSpeedvsPos.png
 	lyxscale 75
 	height 33theight%
 
@@ -243,53 +272,7 @@ Chaos
 \end_layout
 
 \begin_layout Standard
-\begin_inset Float figure
-placement H
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\noindent
-\align center
-
-\emph on
-\begin_inset Graphics
-	filename figures/chaos4.png
-	lyxscale 75
-	width 45page%
-
-\end_inset
-
-
-\begin_inset Graphics
-	filename figures/chaos5.png
-	lyxscale 75
-	width 45page%
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Plain Layout
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:Chaos2"
-
-\end_inset
-
-Chaos
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
+\begin_inset Newpage newpage
 \end_inset
 
 
@@ -317,32 +300,19 @@ target "https://github.com/mef51/superbubbles"
 \end_layout
 
 \begin_layout Standard
-I used Python.
- I wrote a parser in a file called 
+The main file is that performs the integration and plots the results is
+ 
 \begin_inset ERT
 status open
 
 \begin_layout Plain Layout
 
-parsenbody.py
+superbubbles.py
 \end_layout
 
 \end_inset
 
- which reads the data in output file into some python objects.
- The second file 
-\begin_inset ERT
-status open
-
-\begin_layout Plain Layout
-
-nbodyplots.py
-\end_layout
-
-\end_inset
-
- then uses that data to make all the plots in one go.
- Copies of both are attached at the end.
+.
 \end_layout
 
 \end_body
