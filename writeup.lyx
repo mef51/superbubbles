@@ -120,6 +120,28 @@ Shockfronts
 \end_layout
 
 \begin_layout Standard
+\begin_inset Formula 
+\[
+r(z,y)=2H\arccos\Big[\frac{1}{2}e^{z/2H}\Big(1-\frac{y^{2}}{4H^{2}}+e^{-z/H}\Big)\Big]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+z_{1,2}=-2H\ln\Big(1\mp\frac{y}{2H}\Big)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float figure
 placement h
 wide false
