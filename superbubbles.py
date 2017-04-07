@@ -44,13 +44,13 @@ def shockfronts():
 		'filename': 'shockfront.png',
 		'ylim': (-2, 10), 'xlim': (-6, 6),
 		'figsize': (6/1.3, 6.5/1.3),
-		'show': False
+		'show': False,
+		# 'legend': {'loc':4}
 	}
 
 	for i, yi in enumerate(tqdm(y)):
-		figure1[i] = {'x': np.concatenate((r(z, y[i]), -r(z, y[i]))), 'y': np.concatenate((z,z))}
+		figure1[i] = {'x': np.concatenate((r(z, y[i]), -r(z, y[i]))), 'y': np.concatenate((z,z)), 'label': '$y=$'+str(yi)}
 	plawt.plot(figure1)
-
 ### Math Helpers ###
 
 # Derivatives of stuff
@@ -102,62 +102,72 @@ dz1sdt = dzsdt(ys, Es, Omegas)[0]
 
 # Plot
 plawt.plot({
-	0: {'x': time[:len(ys)], 'y': ys},
+	0: {'x': time[:len(ys)], 'y': ys, 'line':'k-'},
 	'show':False,
 	'filename': os.path.join(figdir,'y.png'),
-	'title': "Y",
-	'xlabel': 'time',
+	'title': "(a) $y$ vs Time",
+	'xlabel': '$\\tilde{t}$',
+	'ylabel': '$\\tilde{y}$',
 	'set_yscale': 'log', 'set_xscale': 'log',
-	'xlim': (0.01, 10), 'ylim': (0.1, 10.0)
+	'xlim': (0.01, 10), 'ylim': (0.1, 10.0),
+	'grid':True
 })
 plawt.plot({
-	0: {'x': time[:len(ys)], 'y': Es},
+	0: {'x': time[:len(ys)], 'y': Es, 'line':'k-'},
 	'show':False,
 	'filename': os.path.join(figdir,'energy.png'),
-	'title': "Energy",
-	'xlabel': 'time',
+	'title': "Thermal Energy vs Time",
+	'xlabel': '$\\tilde{t}$',
+	'ylabel': '$\\tilde{E}_{th}$',
 	'set_yscale': 'log', 'set_xscale': 'log',
-	'xlim': (0.01, 10), 'ylim': (0.01, 10.0)
+	'xlim': (0.01, 10), 'ylim': (0.01, 10.0),
+	'grid':True
 })
 plawt.plot({
-	0: {'x': time[:len(ys)], 'y': z12s[0], 'label': 'z1'},
-	1: {'x': time[:len(ys)], 'y': -z12s[1], 'label': 'z2'},
-	2: {'x': time[:len(ys)], 'y': r(0, ys), 'label': '$r(z=0,y)$', 'line': 'k--'},
+	0: {'x': time[:len(ys)], 'y': z12s[0], 'label': '$\\tilde{z}_1$', 'line':'k-'},
+	1: {'x': time[:len(ys)], 'y': -z12s[1], 'label': '$\\tilde{z}_2$'},
+	2: {'x': time[:len(ys)], 'y': r(0, ys), 'label': '$\\tilde{r}(z=0,y)$', 'line': 'k--'},
 	'filename': os.path.join(figdir,'blastedges.png'),
-	'title': 'Blast Edges',
-	'xlabel': 'time',
+	'title': 'Blast Edges vs. Time',
+	'xlabel': '$\\tilde{t}$',
+	'ylabel': 'Distance',
 	'legend': {'loc': 4},
 	'set_yscale': 'log', 'set_xscale': 'log',
-	'xlim': (0.01, 10), 'ylim': (0.1, 10.0)
+	'xlim': (0.01, 10), 'ylim': (0.1, 10.0),
+	'grid':True
 })
 plawt.plot({
-	0: {'x': time[:len(ys)], 'y': Ps},
+	0: {'x': time[:len(ys)], 'y': Ps, 'line':'k-'},
 	'show':False,
 	'filename': os.path.join(figdir,'pressure.png'),
-	'title': "Pressure",
-	'xlabel': 'time',
+	'title': "Pressure vs. Time",
+	'xlabel': '$\\tilde{t}$',
+	'ylabel': '$\\tilde{P}$',
 	'set_yscale': 'log', 'set_xscale': 'log',
-	'xlim': (0.01, 10), 'ylim': (0.01, 10.0)
+	'xlim': (0.01, 10), 'ylim': (0.01, 10.0),
+	'grid':True
 })
 plawt.plot({
-	0: {'x': time[:len(ys)], 'y': dz1sdt},
+	0: {'x': time[:len(ys)], 'y': dz1sdt, 'line':'k-'},
 	'show':False,
 	'filename': os.path.join(figdir,'blastedgespeed.png'),
 	'title': "Blast Edge Speed",
-	'xlabel': 'time',
-	'ylabel': '$dz_1/dt$',
+	'xlabel': '\\tilde{t}',
+	'ylabel': '$d\\tilde{z}_1/dt$',
 	'set_yscale': 'log', 'set_xscale': 'log',
-	'xlim': (0.01, 10), 'ylim': (0.01, 10.0)
+	'xlim': (0.01, 10), 'ylim': (0.01, 10.0),
+	'grid':True
 })
 plawt.plot({
-	0: {'x': z12s[0], 'y': dz1sdt},
+	0: {'x': z12s[0], 'y': dz1sdt, 'line':'k-'},
 	'show':False,
 	'filename': os.path.join(figdir,'blastedgeSpeedvsPos.png'),
 	'title': "Blast Edge Speed vs. Position",
-	'xlabel': '$z_1$',
-	'ylabel': '$dz_1/dt$',
+	'xlabel': '$\\tilde{z}_1$',
+	'ylabel': '$d\\tilde{z}_1/dt$',
 	'set_yscale': 'log', 'set_xscale': 'log',
-	'xlim': (0.1, 10), 'ylim': (0.1, 10.0)
+	'xlim': (0.1, 10), 'ylim': (0.1, 10.0),
+	'grid':True
 })
 
 # alternative: use odeint to solve the entire system. works

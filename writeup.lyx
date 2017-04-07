@@ -144,12 +144,11 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
-Figure 8 motion, default initial conditions.
- Large circles denote the starting position.
- Stars denote the final position of the object.
- Small dots are spaced at equal time intervals (roughly every 20 points)
- and give information on the speed of the object.
- 
+Shockfronts with 
+\begin_inset Formula $y=0.1,0.5,1,1.4,1.7,1.9,1.98,2.0$
+\end_inset
+
+, where 0.1 is the small initial circle and 2.0 is the blown out bubble
 \end_layout
 
 \end_inset
