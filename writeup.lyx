@@ -158,6 +158,14 @@ reference "fig:Shockfronts"
 \end_inset
 
 .
+ An animation of the expanding bubble can be found at 
+\begin_inset CommandInset href
+LatexCommand href
+target "https://github.com/mef51/superbubbles/blob/master/blast.gif"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -174,7 +182,7 @@ status open
 \begin_inset Graphics
 	filename shockfront.png
 	lyxscale 80
-	width 70text%
+	width 69text%
 
 \end_inset
 
