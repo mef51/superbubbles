@@ -1,3 +1,3 @@
 ![image](bubblefig.png)
-![plot](shockfront.png)
+![plot](blast.gif)
 

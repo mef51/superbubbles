@@ -37,6 +37,8 @@ def rmax(y):
 
 
 def shockfronts():
+	import imageio
+
 	z = np.arange(-2, 10, 0.00001)
 	y = [0.1, 0.5, 1, 1.4, 1.7, 1.9, 1.98, 2.0]
 	figure1 = {
@@ -51,6 +53,32 @@ def shockfronts():
 	for i, yi in enumerate(tqdm(y)):
 		figure1[i] = {'x': np.concatenate((r(z, y[i]), -r(z, y[i]))), 'y': np.concatenate((z,z)), 'label': '$y=$'+str(yi)}
 	plawt.plot(figure1)
+
+	animation = {
+		'ylabel': 'z/H', 'xlabel': 'r/H',
+		'ylim': (-2, 10), 'xlim': (-6, 6),
+		'figsize': (6/1.3, 6.5/1.3),
+		'title': 'Likely how W4 expanded',
+		'show': False,
+		'keepOpen': True,
+		'legend': {'loc':4}
+	}
+	y = np.arange(0.01, 2.05, 0.05)
+	with imageio.get_writer('blast.gif', mode='I', fps=24) as writer:
+		for i, t in enumerate(tqdm(y)):
+			animation[0] = {'x': np.concatenate((r(z, y[i]), -r(z, y[i]))), 'y': np.concatenate((z,z)),
+				'line':'k-', 'label':'$y=$'+str(y[i])}
+			plt = plawt.plot(animation)
+			fig = plt.gcf()
+			fig.canvas.draw()
+			data = fig.canvas.tostring_rgb()
+			row, col = fig.canvas.get_width_height()
+			image = np.fromstring(data, dtype=np.uint8).reshape(col, row, 3)
+			writer.append_data(image)
+			plt.close()
+
+shockfronts()
+exit()
 ### Math Helpers ###
 
 # Derivatives of stuff
@@ -152,7 +180,7 @@ plawt.plot({
 	'show':False,
 	'filename': os.path.join(figdir,'blastedgespeed.png'),
 	'title': "Blast Edge Speed",
-	'xlabel': '\\tilde{t}',
+	'xlabel': '$\\tilde{t}$',
 	'ylabel': '$d\\tilde{z}_1/dt$',
 	'set_yscale': 'log', 'set_xscale': 'log',
 	'xlim': (0.01, 10), 'ylim': (0.01, 10.0),

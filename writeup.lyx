@@ -95,7 +95,7 @@ Mohammed Chamma
 \begin_inset Newline newline
 \end_inset
 
-April 6th 2017
+April 9th 2017
 \end_layout
 
 \begin_layout Standard
@@ -120,6 +120,12 @@ Shockfronts
 \end_layout
 
 \begin_layout Standard
+The shockfronts are obtained by plotting the following solution to the Kompaneet
+s model (eq.
+ A8):
+\end_layout
+
+\begin_layout Standard
 \begin_inset Formula 
 \[
 r(z,y)=2H\arccos\Big[\frac{1}{2}e^{z/2H}\Big(1-\frac{y^{2}}{4H^{2}}+e^{-z/H}\Big)\Big]
@@ -131,19 +137,32 @@ r(z,y)=2H\arccos\Big[\frac{1}{2}e^{z/2H}\Big(1-\frac{y^{2}}{4H^{2}}+e^{-z/H}\Big
 \end_layout
 
 \begin_layout Standard
-\begin_inset Formula 
-\[
-z_{1,2}=-2H\ln\Big(1\mp\frac{y}{2H}\Big)
-\]
+The function 
+\begin_inset Formula $r(z,y)$
+\end_inset
+
+ gives one half of the shockfront, so we need to plot 
+\begin_inset Formula $-r(z,y)$
+\end_inset
+
+ as well to obtain the full shape.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Shockfronts"
 
 \end_inset
 
+ shows the plot of the shockfronts for different values of 
+\begin_inset Formula $y$
+\end_inset
 
+.
 \end_layout
 
 \begin_layout Standard
 \begin_inset Float figure
-placement h
+placement H
 wide false
 sideways false
 status open
@@ -155,7 +174,7 @@ status open
 \begin_inset Graphics
 	filename shockfront.png
 	lyxscale 80
-	width 80text%
+	width 70text%
 
 \end_inset
 
@@ -166,6 +185,12 @@ status open
 \begin_inset Caption Standard
 
 \begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Shockfronts"
+
+\end_inset
+
 Shockfronts with 
 \begin_inset Formula $y=0.1,0.5,1,1.4,1.7,1.9,1.98,2.0$
 \end_inset
@@ -190,6 +215,215 @@ Shockfronts with
 
 \size largest
 Integrating
+\end_layout
+
+\begin_layout Standard
+The integration is performed by first differencing.
+ That is, we approximate all derivatives of a function 
+\begin_inset Formula $f$
+\end_inset
+
+ as 
+\begin_inset Formula 
+\[
+\frac{df}{dt}\approx\frac{f_{n+1}-f_{n}}{\Delta t}
+\]
+
+\end_inset
+
+and we get better precision on our result by choosing a smaller and smaller
+ value of 
+\begin_inset Formula $\Delta t$
+\end_inset
+
+ (at the expense of computation time).
+ The values we are interesting in obtaining are 
+\begin_inset Formula $\tilde{y}(t)$
+\end_inset
+
+ and 
+\begin_inset Formula $\tilde{E}_{th}(t)$
+\end_inset
+
+.
+ We will also need 
+\begin_inset Formula $\Omega(t)$
+\end_inset
+
+.
+ We find the dimensionless values 
+\begin_inset Formula $\tilde{y}$
+\end_inset
+
+ and 
+\begin_inset Formula $\tilde{E}$
+\end_inset
+
+ by simply setting the physical constants 
+\begin_inset Formula $H,\,\rho_{0},\,L_{0}=1$
+\end_inset
+
+ in the equations.
+ We use a value of 
+\begin_inset Formula $\gamma=5/3$
+\end_inset
+
+.
+ We also use an initial value of 
+\begin_inset Formula $P=1$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+The integration can begin once we have initial values for 
+\begin_inset Formula $\tilde{y}$
+\end_inset
+
+, 
+\begin_inset Formula $\tilde{E}_{th}$
+\end_inset
+
+ and 
+\begin_inset Formula $\tilde{\Omega}$
+\end_inset
+
+.
+ They are calculated as
+\begin_inset Formula 
+\begin{align*}
+\tilde{y}_{0} & =0.01\qquad\text{(small spherical shockfront)}\\
+\Omega_{0} & =\pi\int_{z_{2}}^{z_{1}}r^{2}(z,\tilde{y}_{0})dz\\
+\tilde{E}_{0} & =\frac{P}{\gamma-1}\Omega_{0}
+\end{align*}
+
+\end_inset
+
+To calculate 
+\begin_inset Formula $\Omega_{0}$
+\end_inset
+
+, 
+\begin_inset Formula $z_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $z_{2}$
+\end_inset
+
+ (the top and bottom of the shockfront, respectively) are first calculated
+ according to eq.
+ (A9) using the value of 
+\begin_inset Formula $\tilde{y}_{0}$
+\end_inset
+
+ before performing the integration:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+z_{1,2}=-2H\ln\Big(1\mp\frac{y}{2H}\Big)
+\]
+
+\end_inset
+
+Then 
+\begin_inset Formula $\tilde{E}_{0}$
+\end_inset
+
+ is calculated by rearranging (A2).
+ With the initial values, the next values 
+\begin_inset Formula $\tilde{y}_{1}$
+\end_inset
+
+, 
+\begin_inset Formula $\tilde{y}_{2}$
+\end_inset
+
+,...
+ and so on are calculated from the appropriate derivatives/equations.
+ The relevant equations are 
+\begin_inset Formula 
+\begin{align*}
+\frac{dy}{dt} & =\sqrt{\frac{\gamma^{2}-1}{2}\frac{E_{th}}{\rho_{0}\Omega}}\quad(A6)\\
+\Omega & =\pi\int_{z_{2}}^{z_{1}}r^{2}(z,y)dz\quad(A3)\\
+\frac{dE}{dt} & =L_{0}-(\gamma-1)\frac{E_{th}}{\Omega}\frac{d\Omega}{dt}\quad(A7)
+\end{align*}
+
+\end_inset
+
+where 
+\begin_inset Formula $P=(\gamma-1)\frac{E_{th}}{\Omega}$
+\end_inset
+
+ is substituted into (A7) since 
+\begin_inset Formula $P$
+\end_inset
+
+ is not, in fact, constant.
+ 
+\end_layout
+
+\begin_layout Standard
+Converting these with the first differencing approach, each iteration is
+ calculated with:
+\begin_inset Formula 
+\begin{align*}
+\tilde{y}_{n+1} & =\sqrt{\frac{\gamma^{2}-1}{2}\frac{\tilde{E}_{0}}{\rho_{0}\Omega_{0}}}\Delta t+\tilde{y}_{n}\\
+\Omega_{n+1} & =\pi\int_{z_{2}}^{z_{1}}r^{2}(z,y_{n})dz\\
+\tilde{E}_{n+1} & =L_{0}\Delta t-(\gamma-1)\tilde{E}_{n}\frac{\Omega_{n+1}-\Omega_{n}}{\Omega_{n}}
+\end{align*}
+
+\end_inset
+
+where again, 
+\begin_inset Formula $z_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $z_{2}$
+\end_inset
+
+ are recalculated each iteration with the most recent value of 
+\begin_inset Formula $\tilde{y}_{n}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+For my integration I chose 
+\begin_inset Formula $\Delta t=0.0001$
+\end_inset
+
+ (since I got strange results with larger 
+\begin_inset Formula $dt$
+\end_inset
+
+) and integrate over 
+\begin_inset Formula $t\in[0.005,10]$
+\end_inset
+
+.
+ Again, the solutions are dimensionless because I set all physical constants
+ to 1.
+ The code takes about 20 seconds to run on a thinkpad with 8gigs of RAM
+ and an intel i5 quadcore.
+\end_layout
+
+\begin_layout Standard
+The results of the integration are shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Time"
+
+\end_inset
+
+, and they are identical to Figure 10 of Basu et al.
+ (1999)
 \end_layout
 
 \begin_layout Standard
@@ -275,11 +509,13 @@ status open
 \begin_layout Plain Layout
 \begin_inset CommandInset label
 LatexCommand label
-name "fig:Chaos"
+name "fig:Time"
 
 \end_inset
 
-Chaos
+Time evolution of the shockfront, mimicking Fig.
+ 10 of Basu et al.
+ 1999
 \end_layout
 
 \end_inset
@@ -305,6 +541,25 @@ Chaos
 \align center
 
 \size largest
+Conclusion
+\end_layout
+
+\begin_layout Standard
+We've plotted various characteristics of an expanding bubble from the Kompaneets
+ model as applied to superbubbles in the Galaxy and we see from Fig.
+ 3 (Basu et al.
+ 1999) that though this model originated in understanding the expansion
+ of shockfronts from nuclear blasts, it works fairly well when applied to
+ windblown bubbles seen in the galaxy (like W4), and can give us valuable
+ physical information about observed bubbles, like scale heights and timescales,
+ despite there being no 'explosion' or supernova to initiate the bubble.
+\end_layout
+
+\begin_layout Section*
+\noindent
+\align center
+
+\size largest
 Code
 \end_layout
 
@@ -321,8 +576,7 @@ target "https://github.com/mef51/superbubbles"
 \end_layout
 
 \begin_layout Standard
-The main file is that performs the integration and plots the results is
- 
+The main file that performs the integration and plots the results is 
 \begin_inset ERT
 status open
 
