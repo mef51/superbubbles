@@ -78,7 +78,7 @@ def shockfronts():
 			plt.close()
 
 shockfronts()
-exit()
+
 ### Math Helpers ###
 
 # Derivatives of stuff
