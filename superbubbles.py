@@ -128,9 +128,16 @@ r = np.vectorize(r) # vectorize after we're done integrating because it makes it
 Ps = PFunc(Es, Omegas)
 dz1sdt = dzsdt(ys, Es, Omegas)[0]
 
+# Analytic spherical solution
+ysphere = (lambda t: 0.77*t**(3/5))(time)
+Rsphere = (lambda t: (125/(154*pi))**(1/5) * L_not**(1/5) * rho_not**(-1/5) * t**(3/5))(time)
+Esphere = (lambda t: (5/11)*L_not*t)(time)
+Psphere = (lambda t: 7 / (3850*pi)**(2/5) * L_not**(2/5) * rho_not**(3/5) * t**(-4/5))(time)
+
 # Plot
 plawt.plot({
 	0: {'x': time[:len(ys)], 'y': ys, 'line':'k-'},
+	1: {'x': time[:len(ys)], 'y': ysphere[:len(ys)], 'line':'k--'},
 	'show':False,
 	'filename': os.path.join(figdir,'y.png'),
 	'title': "(a) $y$ vs Time",
@@ -142,6 +149,7 @@ plawt.plot({
 })
 plawt.plot({
 	0: {'x': time[:len(ys)], 'y': Es, 'line':'k-'},
+	1: {'x': time[:len(ys)], 'y': Esphere[:len(ys)], 'line':'k--'},
 	'show':False,
 	'filename': os.path.join(figdir,'energy.png'),
 	'title': "Thermal Energy vs Time",
@@ -155,6 +163,7 @@ plawt.plot({
 	0: {'x': time[:len(ys)], 'y': z12s[0], 'label': '$\\tilde{z}_1$', 'line':'k-'},
 	1: {'x': time[:len(ys)], 'y': -z12s[1], 'label': '$\\tilde{z}_2$'},
 	2: {'x': time[:len(ys)], 'y': r(0, ys), 'label': '$\\tilde{r}(z=0,y)$', 'line': 'k--'},
+	3: {'x': time[:len(ys)], 'y': ysphere[:len(ys)], 'line':'r--'},
 	'filename': os.path.join(figdir,'blastedges.png'),
 	'title': 'Blast Edges vs. Time',
 	'xlabel': '$\\tilde{t}$',
@@ -166,6 +175,7 @@ plawt.plot({
 })
 plawt.plot({
 	0: {'x': time[:len(ys)], 'y': Ps, 'line':'k-'},
+	1: {'x': time[:len(ys)], 'y': Psphere[:len(ys)], 'line':'k--'},
 	'show':False,
 	'filename': os.path.join(figdir,'pressure.png'),
 	'title': "Pressure vs. Time",
